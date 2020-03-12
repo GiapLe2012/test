@@ -1,23 +1,40 @@
-pipeline { 
-    agent any 
-    options {
-        skipStagesAfterUnstable()
+pipeline {
+    agent any
+    environment {
+        PROJECT_ID = 'PROJECT-ID'
+        CLUSTER_NAME = 'CLUSTER-NAME'
+        LOCATION = 'CLUSTER-LOCATION'
+        CREDENTIALS_ID = 'gke'
     }
     stages {
-        stage('Build') { 
-            steps { 
-                sh 'kubectl get nodes' 
-            }
-        }
-        stage('Test'){
-            steps {              
-                sh 'helm install stable/nginx-ingress' 
-            }
-        }
-        stage('Deploy') {
+        stage("Checkout code") {
             steps {
-                sh 'make publish'
+                checkout scm
             }
         }
-    }
+        stage("Build image") {
+            steps {
+                script {
+                    sh "docker login -u ${giaple} -p ${P@ssw0rd123456}"
+                    myapp = docker.build("DOCKER-HUB-USERNAME/hello:${env.BUILD_ID}")
+                }
+            }
+        }
+        stage("Push image") {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                            myapp.push("latest")
+                            myapp.push("${env.BUILD_ID}")
+                    }
+                }
+            }
+        }        
+        stage('Deploy to GKE') {
+            steps{
+                sh "sed -i 's/hello:latest/hello:${env.BUILD_ID}/g' deployment.yaml"
+                step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
+            }
+        }
+    }    
 }
