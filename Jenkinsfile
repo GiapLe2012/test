@@ -11,8 +11,8 @@ pipeline {
         }
         stage('Test'){
             steps {
-                sh 'helm list'
-                junit 'reports/**/*.xml' 
+                sh 'helm search nginx'
+                sh 'helm install nginx' 
             }
         }
         stage('Deploy') {
