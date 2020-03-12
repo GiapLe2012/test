@@ -11,8 +11,8 @@ pipeline {
         }
         stage('Test'){
             steps {
-                sh 'helm search nginx'
-                sh 'helm install nginx' 
+                sh 'helm search repo nginx'
+                sh 'helm install stable/nginx-ingress' 
             }
         }
         stage('Deploy') {
