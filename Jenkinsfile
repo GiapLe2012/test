@@ -6,12 +6,12 @@ pipeline {
     stages {
         stage('Build') { 
             steps { 
-                echo 'Helo' 
+                sh 'kubectl get nodes' 
             }
         }
         stage('Test'){
             steps {
-                sh 'make check'
+                sh 'helm list'
                 junit 'reports/**/*.xml' 
             }
         }
