@@ -15,7 +15,7 @@ pipeline {
         stage("Build image") {
             steps {
                 script {
-                    sh "docker login -u ${giaple} -p ${P@ssw0rd123456}"
+                    sh "docker login -u giaple -p P@ssw0rd123456"
                     myapp = docker.build("DOCKER-HUB-USERNAME/hello:${env.BUILD_ID}")
                 }
             }
