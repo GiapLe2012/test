@@ -24,10 +24,8 @@ pipeline {
             steps {
                 script {
                     sh "docker login -u giaple -p P@ssw0rd123456"
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                            myapp.push("latest")
-                            myapp.push("${env.BUILD_ID}")
-                    }
+                    sh "docker push giaple/demo:${env.BUILD_ID}"
+                       
                 }
             }
         }        
