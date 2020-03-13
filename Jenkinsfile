@@ -23,10 +23,11 @@ pipeline {
         stage("Push image") {
             steps {
                 script {
-                    sh "
+                    sh """
                     docker login -u giaple -p P@ssw0rd123456
                     docker push giaple/demo:${env.BUILD_ID}
-                    docker rmi giaple/demo:${env.BUILD_ID}"
+                    docker rmi giaple/demo:${env.BUILD_ID}
+                    """
                 }
             }
         }        
