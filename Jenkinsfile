@@ -23,15 +23,16 @@ pipeline {
         stage("Push image") {
             steps {
                 script {
-                    sh "docker login -u giaple -p P@ssw0rd123456"
-                    sh "docker push giaple/demo:${env.BUILD_ID}"
-                       
+                    sh "
+                    docker login -u giaple -p P@ssw0rd123456
+                    docker push giaple/demo:${env.BUILD_ID}
+                    docker rmi giaple/demo:${env.BUILD_ID}"
                 }
             }
         }        
         stage('Deploy to Kubenetes-Local') {
             steps{
-                sh "sed -i 's/hello:latest/hello:${env.BUILD_ID}/g' deployment.yaml"
+                sh "sed -i 's/demo:latest/demo:${env.BUILD_ID}/g' deployment.yaml"
                 sh "kubectl apply -f deployment.yaml"
             }
         }
