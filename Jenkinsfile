@@ -16,7 +16,7 @@ pipeline {
             steps {
                 script {
                     sh "docker login -u giaple -p P@ssw0rd123456"
-                    myapp = docker.build("DOCKER-HUB-USERNAME/hello:${env.BUILD_ID}")
+                    myapp = docker.build("giaple/demo:${env.BUILD_ID}")
                 }
             }
         }
