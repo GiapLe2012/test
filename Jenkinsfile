@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         PROJECT_ID = 'PROJECT-ID'
-        CLUSTER_NAME = 'CLUSTER-NAME'
+        CLUSTER_NAME = 'kube1'
         LOCATION = 'CLUSTER-LOCATION'
         CREDENTIALS_ID = 'gke'
     }
@@ -30,7 +30,7 @@ pipeline {
                 }
             }
         }        
-        stage('Deploy to GKE') {
+        stage('Deploy to Kubenetes-Local') {
             steps{
                 sh "sed -i 's/hello:latest/hello:${env.BUILD_ID}/g' deployment.yaml"
                 step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
