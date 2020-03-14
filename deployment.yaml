@@ -1,38 +1,47 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-name: hello
-labels:
-  app: hello
+  # tên của deployment
+  name: deployapp
 spec:
-strategy:
-  type: Recreate
-template:
-  metadata:
-    labels:
-      app: hello
-      tier: hello
-  spec:
-    containers:
-    - name: hello
-      image: giaple/demo:latest
-      imagePullPolicy: Always
-      ports:
-      - containerPort: 6000
-        name: hello
+  # số POD tạo ra
+  replicas: 2
+
+  # thiết lập các POD do deploy quản lý, là POD có nhãn  "app=deployapp"
+  selector:
+    matchLabels:
+      app: deployapp
+
+  # Định nghĩa mẫu POD, khi cần Deploy sử dụng mẫu này để tạo Pod
+  template:
+    metadata:
+      name: podapp
+      labels:
+        app: deployapp
+    spec:
+      containers:
+      - name: node
+        #image: ichte/swarmtest:node
+        image: giaple/demo:latest
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        ports:
+          - containerPort: 8085
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-name: hello
+name: podapp
 labels:
-  app: hello
+  app: podapp
 spec:
 ports:
-  - port: 6000
-    targetPort: 6000
+  - port: 8085
+    targetPort: 8085
 selector:
-  app: hello
-  tier: hello
+  app: podapp
+  tier: podapp
 type: LoadBalancer
