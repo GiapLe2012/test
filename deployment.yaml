@@ -36,7 +36,8 @@ kind: Service
 metadata:
   name: hello
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
-  - port: 8085
-    targetPort: 6000
+   - protocol: TCP
+     port: 8085
+     targetPort: 8085
