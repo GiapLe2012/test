@@ -34,14 +34,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-name: podapp
-labels:
-  app: podapp
+  name: hello
 spec:
-ports:
+  type: ClusterIP
+  ports:
   - port: 8085
-    targetPort: 8085
-selector:
-  app: podapp
-  tier: podapp
-type: LoadBalancer
+    targetPort: 6000
