@@ -34,7 +34,7 @@ spec:
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: giaplv          
+  name: giaplv-app          
 ---
 #service
 apiVersion: v1
