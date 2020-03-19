@@ -32,7 +32,7 @@ spec:
 ---
 #namespace
 apiVersion: v1
-kind: giaplv
+kind: Namespace
 metadata:
   name: giaplv          
 ---
