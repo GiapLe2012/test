@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: giaplv
+kind: Deployment
 metadata:
   # tên của deployment
   name: deployapp
@@ -35,6 +35,8 @@ kind: Service
 metadata:
   name: hello
 spec:
+  selector:
+    app: deployapp
   type: NodePort
   ports:
    - protocol: TCP
